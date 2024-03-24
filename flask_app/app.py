@@ -90,6 +90,12 @@ def calculate_carbon_footprint():
 
     return render_template('carbon_footprint_result.html', carbon_footprint=carbon_footprint)
 
+@app.route('/chatbot')
+def process_ai():
+    messages = request.json['messages']
+    response = {'response': 'AI response here'}
+    return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

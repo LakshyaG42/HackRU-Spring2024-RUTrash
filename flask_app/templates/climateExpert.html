@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Expert Chatbot</title>
+</head>
+<body>
+    <h1>Climate Expert Chatbot</h1>
+    <form id="input-form">
+        <input type="text" name="query" id="query-input" placeholder="Enter your query">
+        <button type="submit" id="submit-btn">Send</button>
+    </form>
+    <div id="ai-content"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('input-form');
+            const queryInput = document.getElementById('query-input');
+            const aiContent = document.getElementById('ai-content');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const query = queryInput.value;
+                const response = await fetch('/ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ messages: [{ role: 'user', content: query }] })
+                });
+                const data = await response.json();
+                aiContent.innerHTML = `<p>${data.response}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
