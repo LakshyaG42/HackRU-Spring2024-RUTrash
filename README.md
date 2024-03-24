@@ -30,7 +30,7 @@ cd RUTrash
 Navigate to the project directory and run the following command to start the Flask app:
 
 ```bash
-python app.py
+python .\flask_app\app.py
 ```
 
 This command will start the development server, and you should see output similar to the following:
