@@ -10,7 +10,6 @@ import requests
 from markdown import markdown
 app = Flask(__name__)
 
-# Load the saved MobileNetV2 model
 model = models.mobilenet_v2()
 num_classes = 12
 class_names = ['battery', 'biological', 'brown-glass', 'cardboard', 'clothes', 'green-glass', 'metal', 'paper', 'plastic', 'shoes', 'trash', 'white-glass']  
@@ -24,7 +23,6 @@ model.classifier = nn.Sequential(
 model.load_state_dict(torch.load('garbage_classification_model.pth', map_location=torch.device('cpu')))
 model.eval()
 
-# Define transformations for the input image
 data_transforms = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
@@ -35,31 +33,25 @@ data_transforms = transforms.Compose([
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Check if a file was uploaded
         if 'file' not in request.files:
             return render_template('index.html', error='No file uploaded')
 
         file = request.files['file']
 
-        # Check if the file is empty
         if file.filename == '':
             return render_template('index.html', error='No file selected')
 
-        # Check if the file format is allowed
         allowed_extensions = {'jpg', 'jpeg', 'png'}
         if not file.filename.lower().endswith(tuple(allowed_extensions)):
             return render_template('index.html', error='Invalid file format')
 
-        # Process the uploaded image
         image = Image.open(file.stream)
-        image_tensor = data_transforms(image).unsqueeze(0)  # Add batch dimension
+        image_tensor = data_transforms(image).unsqueeze(0)
 
-        # Make predictions
         with torch.no_grad():
             outputs = model(image_tensor)
             _, predicted = torch.max(outputs, 1)
 
-        # Get the predicted class label
         predicted_class = predicted.item()
         predicted_label = class_names[predicted_class]
 
