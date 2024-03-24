@@ -15,7 +15,7 @@ pip install torch
 pip install torchvision
 pip install markdown
 pip install numpy
-
+pip install python-dotenv
 ```
 
 Clone this repository to your local machine:
