@@ -1,10 +1,9 @@
 ---
 
-# Flask App README
+#  RU TRASH README
 
 ## Overview
 
-This Flask app is designed to [briefly describe what your app does and its purpose].
 
 ## Installation
 
@@ -17,13 +16,9 @@ pip install flask
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/LakshyaG42/RUTrash.git
+cd RUTrash
 ```
-
-## Setup
-
-Before running the app, you may need to set up any necessary configurations or environment variables. [Include any specific configurations or environment variables required for your app.]
 
 ## Running the App
 
@@ -47,22 +42,7 @@ Once the app is running, open a web browser and visit the following URL to acces
 http://127.0.0.1:5000/
 ```
 
-[Include any additional instructions or details on how to use your app, such as interacting with forms, endpoints, or navigating the interface.]
-
 ## Testing
-
-[If applicable, provide instructions on how to run tests to ensure the app's functionality.]
-
-## Contributing
-
-[If you welcome contributions, outline guidelines for contributing to the project, such as how to submit pull requests, code style conventions, and code review processes.]
-
-## License
-
-[Specify the license under which your project is distributed.]
-
 ## Contact
 
-For questions or support, please contact [your contact information or relevant resources].
-
----
+For questions or support, please contact lakshyagour42@gmail.com
