@@ -3,15 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classification Result</title>
+    <title>What should I do with this Garbage!?</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Image Classification Result</h1>
-    <p>Predicted Label: {{ predicted_label }}</p>
+    <div class="background-image"></div>
+    <div class="container">
+    <h1>What should I do with this Garbage!?</h1>
+    <p><center>Predicted trash type: {{ predicted_label }}</center>
+    Recommendation:
+    </p>
 
+        <div class= "recommendation-container">
+            <p>{{ recommendation | safe }}</p>
+        </div>
+        {% if isRecycle %}
+        <img src="{{ url_for('static', filename='recycle.jpg') }}" alt="Image">
+        {% endif %}
+
+        {% if isTrash %}
+        <img src="{{ url_for('static', filename='trash.gif') }}" alt="Image">
+        {% endif %}
+        
+        {% if isDonation %}
+        <img src="{{ url_for('static', filename='donation.jpg') }}" alt="Image">
+        {% endif %}
+
+        {% if isElectronic %}
+        <img src="{{ url_for('static', filename='battery.gif') }}" alt="Image">
+        {% endif %}
+    </div>
+    
+    <form action="/" method="GET">
+        <button type="submit"> Go back to main page</button>
+    </form>
 </body>
-<form action="/" method="GET">
-    <button type="submit">Go back to main page</button>
-</form>
+
 </html>

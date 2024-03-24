@@ -30,6 +30,21 @@ data_transforms = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
+recommendations = {
+    'battery' : "Non-rechargeable and alkaline household batteries may be discarded with regular trash. If you need to get rid of rechargeable batteries, you can: \n Drop them off at a Special Waste Disposal site \n Bring them to a store that sells rechargeable batteries or products containing them",
+    'biological' : "Biological waste, such as food scraps or organic materials, can be composted if possible. Otherwise put it in the trash!",
+    'brown-glass': "Glass containers, such as bottles or jars, can be recycled in glass recycling bins. \n Make sure to rinse the containers before recycling to remove any residue.",
+    'green-glass': "Glass containers, such as bottles or jars, can be recycled in glass recycling bins. \n Make sure to rinse the containers before recycling to remove any residue.",
+    'white-glass': "Glass containers, such as bottles or jars, can be recycled in glass recycling bins. \n Make sure to rinse the containers before recycling to remove any residue.",
+    'cardboard': "Cardboard boxes and packaging materials should be flattened and recycled in designated cardboard recycling bins.",
+    'clothes' : "Clothes in good condition can be donated to charity organizations or thrift stores for reuse. Worn-out or damaged clothes can be recycled at textile recycling centers or repurposed into cleaning rags.",
+    'metal' : 'Metal items, such as aluminum cans, steel containers, or small metal objects, can be recycled in metal recycling bins. \n Check with local recycling centers for specific guidelines on metal recycling.',
+    'paper': "Paper materials, including newspapers, magazines, office paper, and cardboard packaging, can be recycled in paper recycling bins.",
+    'plastic' : 'Plastic containers, bottles, and packaging materials should be recycled in plastic recycling bins.',
+    'shoes' : 'Donate gently used shoes to charitable organizations or shoe donation centers for reuse. \n Worn-out or damaged shoes may be recyclable at certain recycling facilities that accept textiles and footwear.',
+    'trash' : "Items that cannot be recycled or reused should be disposed of in regular household waste bins."
+}
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -54,8 +69,13 @@ def index():
 
         predicted_class = predicted.item()
         predicted_label = class_names[predicted_class]
-
-        return render_template('result.html', image_path=file.filename, predicted_label=predicted_label)
+        recommendation = recommendations[predicted_label]
+        isRecycle = predicted_label in ['paper', 'plastic', 'green-glass', 'brown-glass', 'white-glass', 'cardboard', 'metal']
+        isTrash = predicted_label in ['biological', 'trash']
+        isDonation = predicted_label in ['clothes', 'shoes']
+        print(isDonation)
+        isElectronic = predicted_label in ['battery']
+        return render_template('result.html', image_path=file.filename, predicted_label=predicted_label, recommendation = recommendation, isRecycle = isRecycle, isTrash = isTrash, isDonation = isDonation, isElectronic = isElectronic)
 
     return render_template('index.html')
 
