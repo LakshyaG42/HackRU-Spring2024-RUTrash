@@ -6,7 +6,8 @@ from PIL import Image
 import numpy as np
 from torchvision import models
 import torch.nn as nn
-
+import requests
+from markdown import markdown
 app = Flask(__name__)
 
 # Load the saved MobileNetV2 model
@@ -90,11 +91,28 @@ def calculate_carbon_footprint():
 
     return render_template('carbon_footprint_result.html', carbon_footprint=carbon_footprint)
 
-@app.route('/chatbot')
-def process_ai():
-    messages = request.json['messages']
-    response = {'response': 'AI response here'}
-    return jsonify(response)
+CLOUDFLARE_API_TOKEN = os.getenv('CLOUDFLARE_API_TOKEN')
+CLOUDFLARE_ACCOUNT_ID = os.getenv('CLOUDFLARE_ACCOUNT_ID')
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        model = "@cf/meta/llama-2-7b-chat-int8"
+        query = request.form['query']
+
+        response = requests.post(
+            f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{model}",
+            headers={"Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}"},
+            json={"messages": [
+                {"role": "user", "content": query}
+            ]}
+        )
+
+        inference = response.json()
+        markdown_response = inference.get("result", {}).get("response", "")
+
+        return render_template('climateExpert.html', response=markdown(markdown_response), input_query=query)
+
+    return render_template('climateExpert.html')
 
 
 if __name__ == '__main__':
