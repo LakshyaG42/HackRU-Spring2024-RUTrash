@@ -12,7 +12,7 @@ num_classes = len(os.listdir(data_dir))
 input_size = 224
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Define data transformations
+
 data_transforms = transforms.Compose([
     transforms.RandomResizedCrop(input_size),
     transforms.RandomHorizontalFlip(),
@@ -20,10 +20,9 @@ data_transforms = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# Load the dataset
+
 dataset = datasets.ImageFolder(data_dir, transform=data_transforms)
 
-# Split dataset into training and validation sets
 num_samples = len(dataset)
 split_ratio = 0.8
 split = int(split_ratio * num_samples)
@@ -37,7 +36,6 @@ val_sampler = SubsetRandomSampler(val_indices)
 train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
 val_loader = DataLoader(dataset, batch_size=batch_size, sampler=val_sampler)
 
-# Define the model
 model = models.mobilenet_v2(pretrained=True)
 num_ftrs = model.classifier[1].in_features
 model.classifier = nn.Sequential(
@@ -48,11 +46,11 @@ model.classifier = nn.Sequential(
 )
 model = model.to(device)
 
-# Define loss function and optimizer
+
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
 
-# Training the model
+
 def train_model(model, criterion, optimizer, num_epochs=10):
     best_model_wts = model.state_dict()
     best_acc = 0.0
@@ -104,9 +102,8 @@ def train_model(model, criterion, optimizer, num_epochs=10):
     model.load_state_dict(best_model_wts)
     return model
 
-# Train the model
+
 epochs = 10
 model = train_model(model, criterion, optimizer, num_epochs=epochs)
 
-# Save the model
 torch.save(model.state_dict(), 'garbage_classification_model.pth')

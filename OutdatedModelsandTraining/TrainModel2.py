@@ -7,7 +7,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-# Define data directory and other hyperparameters
+
 data_dir = "data/garbage_classification"
 batch_size = 32
 num_classes = len(os.listdir(data_dir))
@@ -17,7 +17,6 @@ num_epochs = 20
 learning_rate = 0.001
 patience = 3
 
-# Define data transformations
 data_transforms = transforms.Compose([
     transforms.RandomResizedCrop(input_size),
     transforms.RandomHorizontalFlip(),
@@ -25,10 +24,9 @@ data_transforms = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# Load the dataset
+
 dataset = datasets.ImageFolder(data_dir, transform=data_transforms)
 
-# Split dataset into training and validation sets
 num_samples = len(dataset)
 split_ratio = 0.8
 split = int(split_ratio * num_samples)
@@ -42,7 +40,7 @@ val_sampler = SubsetRandomSampler(val_indices)
 train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
 val_loader = DataLoader(dataset, batch_size=batch_size, sampler=val_sampler)
 
-# Define the model
+
 model = models.mobilenet_v2(pretrained=True)
 num_ftrs = model.classifier[1].in_features
 model.classifier = nn.Sequential(
@@ -53,19 +51,15 @@ model.classifier = nn.Sequential(
 )
 model = model.to(device)
 
-# Define loss function, optimizer, and learning rate scheduler
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.2, patience=2, verbose=True)
 
-# Early stopping variables
 early_stopping_counter = 0
 best_val_loss = float('inf')
 best_model_weights = None
 
-# Training loop with tqdm progress bar
 for epoch in range(num_epochs):
-    # Training phase
     model.train()
     train_loss = 0.0
     train_corrects = 0
@@ -88,7 +82,6 @@ for epoch in range(num_epochs):
         
         train_iterator.set_postfix({'Loss': train_loss / train_total, 'Accuracy': train_corrects.double() / train_total})
     
-    # Validation phase
     model.eval()
     val_loss = 0.0
     val_corrects = 0
@@ -110,7 +103,6 @@ for epoch in range(num_epochs):
     print(f'Epoch {epoch + 1}/{num_epochs}, Train Loss: {train_loss / train_total:.4f}, '
           f'Train Acc: {train_corrects.double() / train_total:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
     
-    # Check for early stopping
     if val_loss < best_val_loss:
         best_val_loss = val_loss
         best_model_weights = model.state_dict()
@@ -121,12 +113,10 @@ for epoch in range(num_epochs):
             print("Early stopping triggered.")
             break
     
-    # Step the learning rate scheduler
+    
     scheduler.step(val_loss)
 
-# Load the best model weights
 if best_model_weights is not None:
     model.load_state_dict(best_model_weights)
 
-# Save the model
 torch.save(model.state_dict(), 'garbage_classification_model.pth')

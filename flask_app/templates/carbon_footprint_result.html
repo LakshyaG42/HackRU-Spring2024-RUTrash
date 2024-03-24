@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classification Result</title>
+    <title>Carbon Footprint Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Image Classification Result</h1>
-    <p>Predicted Label: {{ predicted_label }}</p>
-
+    <h1>Carbon Footprint Result</h1>
+    <p>Your total carbon footprint is: {{ carbon_footprint }} pounds per year</p>
 </body>
 <form action="/" method="GET">
     <button type="submit">Go back to main page</button>

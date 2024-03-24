@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, jsonify, request, render_template
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
@@ -65,6 +65,31 @@ def index():
         return render_template('result.html', image_path=file.filename, predicted_label=predicted_label)
 
     return render_template('index.html')
+
+@app.route('/calculate', methods=['POST'])
+def calculate_carbon_footprint():
+    electric_bill = float(request.form['electric_bill'])
+    gas_bill = float(request.form['gas_bill'])
+    oil_bill = float(request.form['oil_bill'])
+    car_mileage = float(request.form['car_mileage'])
+    flights_short = int(request.form['flights_short'])
+    flights_long = int(request.form['flights_long'])
+    recycle_newspaper = request.form.get('recycle_newspaper') == 'on'
+    recycle_aluminum = request.form.get('recycle_aluminum') == 'on'
+
+    carbon_footprint = (
+        electric_bill * 105 +
+        gas_bill * 105 +
+        oil_bill * 113 +
+        car_mileage * 0.79 +
+        flights_short * 1100 +
+        flights_long * 4400 +
+        (184 if not recycle_newspaper else 0) +
+        (166 if not recycle_aluminum else 0)
+    )
+
+    return render_template('carbon_footprint_result.html', carbon_footprint=carbon_footprint)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
