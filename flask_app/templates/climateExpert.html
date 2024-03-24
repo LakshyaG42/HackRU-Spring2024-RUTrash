@@ -7,22 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Climate Expert Chatbot</h1>
-    
-    <form id="input-form" autocomplete="off" method="post" action="/chatbot">
-        <label for="query">Ask a question:</label>
-        <input type="text" id="query" name="query" required>
-        <button type="submit">Send</button>
-    </form>
+    <div class="background-image"></div>
+    <div class = "container">
+        <h1>Climate Expert Chatbot</h1>
+        
+        <form id="input-form" autocomplete="off" method="post" action="/chatbot">
+            <label for="query">Ask a question:</label>
+            <input type="text" id="query" name="query" required>
+            <button type="submit">Send</button>
+        </form>
+        <div id="chat-container">
+            {% if input_query %}
+            <div class="recommendation-container">
+                <div class="message user">User: {{ input_query }}</div>
+            </div>
+                
+            {% endif %}
 
-    <div id="chat-container">
-        {% if input_query %}
-            <div class="message user">User: {{ input_query }}</div>
-        {% endif %}
-
-        {% if response %}
-            <div class="message assistant" id="ai-response">Climate Expert: {{ response | safe }}</div>
-        {% endif %}
+            {% if response %}
+            <div class="recommendation-container">
+                <div class="message assistant" id="ai-response">Climate Expert: {{ response | safe }}</div>
+            </div>
+                
+            {% endif %}
+        </div>
     </div>
     <form action="/" method="GET">
         <button type="submit">Go back to main page</button>

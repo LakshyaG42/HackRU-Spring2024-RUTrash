@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <div class="background-image"></div>
+    <div class = "container">
     <h1>Carbon Footprint Result</h1>
-    <p>Your total carbon footprint is: {{ carbon_footprint }} pounds per year</p>
+    <div class="recommendation-container">
+        <p>Your total carbon footprint is: {{ carbon_footprint }} pounds per year</p>
+        The optimal carbon footprint ranges from 6,000 to 16,000 pounds of greenhouse gasses per year per person. 
+    </div>
+    <br>
 </body>
 <form action="/" method="GET">
     <button type="submit">Go back to main page</button>

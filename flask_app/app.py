@@ -115,6 +115,7 @@ def chatbot():
             f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{model}",
             headers={"Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}"},
             json={"messages": [
+                {"role": "system", "content": 'You are a climate expert and your main goal is to help better the enviornment. Respond professionally but keep it simple.'},
                 {"role": "user", "content": query}
             ]}
         )

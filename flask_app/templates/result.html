@@ -18,19 +18,20 @@
             <p>{{ recommendation | safe }}</p>
         </div>
         {% if isRecycle %}
-        <img src="{{ url_for('static', filename='recycle.jpg') }}" alt="Image">
+        <img src="{{ url_for('static', filename='recycle.jpg') }}" alt="Image" class="image-fit">
         {% endif %}
 
         {% if isTrash %}
-        <img src="{{ url_for('static', filename='trash.gif') }}" alt="Image">
+        <img src="{{ url_for('static', filename='trash.gif') }}" alt="Image" class="image-fit">
         {% endif %}
         
         {% if isDonation %}
-        <img src="{{ url_for('static', filename='donation.jpg') }}" alt="Image">
+        <img src="{{ url_for('static', filename='donation.jpg') }}" alt="Image" class="image-fit">
         {% endif %}
 
         {% if isElectronic %}
-        <img src="{{ url_for('static', filename='battery.gif') }}" alt="Image">
+        <img src="{{ url_for('static', filename='battery.gif') }}" alt="Image" class="image-fit">
+        <p>Don't throw computers and other electronics in the trash like they do in the gif.</p>
         {% endif %}
     </div>
     
