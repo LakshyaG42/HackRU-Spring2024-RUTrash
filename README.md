@@ -11,6 +11,11 @@ To run this app, you need to have Python and Flask installed on your system. If 
 
 ```bash
 pip install flask
+pip install torch
+pip install torchvision
+pip install markdown
+pip install numpy
+
 ```
 
 Clone this repository to your local machine:
